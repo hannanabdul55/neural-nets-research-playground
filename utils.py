@@ -19,14 +19,12 @@ def print_stats(model_p, sparsity=1e-4):
     params_n = params.detach().numpy()
     N = params_n.size
     stats = {}
-    print("Mean")
     stats['mean'] = np.mean(np.abs(params_n))
-    print(stats['mean'])
-    print("standard deviation")
+    print("Mean: ",stats['mean'])
     stats['std'] = np.sqrt(np.var(np.abs(params_n)))
-    print(stats['std'])
-    print("Sparsity")
-    print(np.sum(np.abs(params_n)<sparsity)/N)
+    print("Standard Deviation: ",  stats['std'])
+    print("Sparsity: ", np.sum(np.abs(params_n)<sparsity)/N)
+    return stats
 
     
 def get_model_error(model_t, testloader):
@@ -96,15 +94,11 @@ def train_model(model, traindata, criterion, optimizer=None, epochs=5):
                       (epoch + 1, i + 1, loss.item()))
     return loss_history
 
-l1_loss = torch.nn.L1Loss()
-mse_loss = torch.nn.MSELoss(reduction='sum')
-
 def train_model_self_reg(model, traindata, criterion, optimizer=None, epochs=5):
+    mse_loss = torch.nn.MSELoss(reduction='sum')
     writer = SummaryWriter(flush_secs=10)
     loss_history = []
-#     encoded_model = get_encoder_model(model)
     if optimizer is None:
-#         optimizer = optim.Adam(list(model.parameters()) + list(encoded_model.parameters()), lr=3e-4)
         optimizer = optim.Adam(list(model.parameters()), lr=3e-4)
     model_param_prev = None
     for epoch in range(epochs):  # loop over the dataset multiple times
@@ -123,7 +117,6 @@ def train_model_self_reg(model, traindata, criterion, optimizer=None, epochs=5):
                 loss += mse_loss(get_vector_from_params(model),model_param_prev)
             loss.backward()
             model_param_prev = torch.cat([param.view(-1) for param in model.parameters()])
-#             print(get_vector_from_params(model))
             optimizer.step()
             if writer is not None:
                 writer.add_scalar("Loss/Train", loss.item())
@@ -178,3 +171,13 @@ def load_CIFAR(batch_size=64):
 
 def classification_model_accuracy(y_true, y_pred):
     return f1_score(y_true, y_pred, average=None), accuracy_score(y_true, y_pred)
+
+def plot_graph(x_values, y_values, x_label='', y_label='', fig_title='',plt_title='', color='g', show_legend=True):
+    import matplotlib.pyplot as plt
+    fig, axs = plt.subplots(1, 1)
+    axs.plot(x_values, y_values,color=color)
+    axs.set(xlabel=x_label, ylabel=y_label, title=plt_title)
+    if show_legend:
+        axs.legend()
+    fig.suptitle(fig_title)
+    plt.show()
