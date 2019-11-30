@@ -18,16 +18,16 @@ class ScaleLayer(nn.Module):
         self.momentum = momentum
         self.activation = nn.Tanh()
         self.writer = writer
-        self.register_buffer('alpha', torch.tensor(alpha, requires_grad=False))
+        self.alpha = nn.Parameter(torch.tensor(alpha), requires_grad=True)
+#         self.register_buffer('alpha', torch.tensor(alpha, requires_grad=False))
         
     def forward(self, input):
-        res = self.activation(self.alpha * input)
-        if self.training:
-            self.alpha = (self.momentum * self.alpha + (1-self.momentum)* (torch.std(input))).detach()
-            if self.writer is not None:
-                self.writer.add_scalar("Loss/Alpha",self.alpha.numpy())
+        res = torch.exp(-1*self.alpha) * self.activation(self.alpha * input)
+#         if self.training:
+#             self.alpha = (self.momentum * self.alpha + (1-self.momentum)* (torch.std(input))).detach()
+        if self.writer is not None:
+            self.writer.add_scalar("Loss/Alpha",self.alpha.data)
 #             print("alpha:" + str(self.alpha))
-            
         return res
     
 #     def forward(self, input):
