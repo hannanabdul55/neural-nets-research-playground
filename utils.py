@@ -79,7 +79,7 @@ def train_model(model, traindata, criterion, optimizer=None, epochs=5):
 
             # forward + backward + optimize
             outputs = model(inputs)
-            loss = criterion(outputs, labels, model)
+            loss = criterion(outputs, labels)
             loss.backward()
             optimizer.step()
             if writer is not None:
