@@ -43,7 +43,7 @@ class VGG(nn.Module):
         return x
 
 
-def make_layers(cfg, batch_norm=False):
+def make_layers(cfg, batch_norm=False, norm_layer=nn.BatchNorm2d):
     layers = []
     in_channels = 3
     for v in cfg:
@@ -52,7 +52,7 @@ def make_layers(cfg, batch_norm=False):
         else:
             conv2d = nn.Conv2d(in_channels, v, kernel_size=3, padding=1)
             if batch_norm:
-                layers += [conv2d, nn.BatchNorm2d(v), nn.ReLU(inplace=True)]
+                layers += [conv2d, norm_layer(v), nn.ReLU(inplace=True)]
             else:
                 layers += [conv2d, nn.ReLU(inplace=True)]
             in_channels = v
@@ -73,9 +73,9 @@ def vgg11():
     return VGG(make_layers(cfg['A']))
 
 
-def vgg11_bn():
+def vgg11_bn(norm_layer= nn.BatchNorm2d):
     """VGG 11-layer model (configuration "A") with batch normalization"""
-    return VGG(make_layers(cfg['A'], batch_norm=True))
+    return VGG(make_layers(cfg['A'], batch_norm=True, norm_layer=norm_layer))
 
 
 def vgg13():
@@ -83,9 +83,9 @@ def vgg13():
     return VGG(make_layers(cfg['B']))
 
 
-def vgg13_bn():
+def vgg13_bn(norm_layer=nn.BatchNorm2d):
     """VGG 13-layer model (configuration "B") with batch normalization"""
-    return VGG(make_layers(cfg['B'], batch_norm=True))
+    return VGG(make_layers(cfg['B'], batch_norm=True, norm_layer=norm_layer))
 
 
 def vgg16():
@@ -93,9 +93,9 @@ def vgg16():
     return VGG(make_layers(cfg['D']))
 
 
-def vgg16_bn():
+def vgg16_bn(norm_layer=nn.BatchNorm2d):
     """VGG 16-layer model (configuration "D") with batch normalization"""
-    return VGG(make_layers(cfg['D'], batch_norm=True))
+    return VGG(make_layers(cfg['D'], batch_norm=True, norm_layer=norm_layer))
 
 
 def vgg19():
@@ -103,6 +103,6 @@ def vgg19():
     return VGG(make_layers(cfg['E']))
 
 
-def vgg19_bn():
+def vgg19_bn(norm_layer=nn.BatchNorm2d):
     """VGG 19-layer model (configuration 'E') with batch normalization"""
-    return VGG(make_layers(cfg['E'], batch_norm=True))
+    return VGG(make_layers(cfg['E'], batch_norm=True, norm_layer=norm_layer))

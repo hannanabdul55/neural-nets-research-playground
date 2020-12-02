@@ -18,18 +18,13 @@ class ScaleLayer(nn.Module):
         self.momentum = momentum
         self.activation = nn.ReLU()
         self.writer = writer
-#         self.register_buffer('alpha', torch.tensor(alpha))
-        self.register_buffer('alpha', torch.tensor(alpha, requires_grad=True))
-        
+        #         self.register_buffer('alpha', torch.tensor(alpha))
+        # self.register_buffer('alpha', torch.tensor(alpha, requires_grad=True))
+        self.alpha = nn.Parameter(torch.tensor(alpha), requires_grad=True)
+
     def forward(self, input):
-        res = self.activation(input/self.alpha)
-        if self.training:
-            self.alpha = nn.Parameter((self.momentum * self.alpha + (1-self.momentum)* (torch.std(input))))
+        res = (self.alpha/torch.max(input)) * input
         if self.writer is not None:
-            self.writer.add_scalar("Loss/Alpha",self.alpha.data)
-#             print("alpha:" + str(self.alpha))
+            self.writer.add_scalar("Loss/Alpha", self.alpha.data)
+        #             print("alpha:" + str(self.alpha))
         return res
-    
-#     def forward(self, input):
-        
-       
