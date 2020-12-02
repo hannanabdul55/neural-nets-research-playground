@@ -85,7 +85,7 @@ else:
     ]
     }
 
-@ray.remote
+@ray.remote(num_gpus=1)
 def run_experiment(exp):
     normalize = transforms.Normalize(mean=[0.485, 0.456, 0.406],
                                      std=[0.229, 0.224, 0.225])
@@ -135,7 +135,7 @@ def run_experiment(exp):
         else:
             model = vgg_test.vgg11_bn(norm_layer=norm)
 
-    trainer = pl.Trainer( max_epochs=e, progress_bar_refresh_rate=10)
+    trainer = pl.Trainer(gpus=1,max_epochs=e, progress_bar_refresh_rate=10)
 
     trainer.fit(LitModel(model, name = exp['name']), train_loader, val_loader)
 
@@ -153,7 +153,7 @@ if __name__ == '__main__':
     if has_gpu:
         print(f"Initializing ray with {2} GPUs")
         print('Available devices ', torch.cuda.device_count())
-        ray.init({'num_gpus': torch.cuda.device_count()})
+        ray.init(num_gpus= torch.cuda.device_count())
     else:
         print(f"Initializing with no GPUs")
         ray.init()
