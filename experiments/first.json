@@ -1,0 +1,28 @@
+{
+  "name": "vgg16_run",
+  "exps": [
+    {
+      "name": "layernorm_vgg16",
+      "norm_type": "layernorm",
+      "epochs": 200,
+      "model": "vgg16"
+    },
+    {
+      "name": "batchnorm_vgg16",
+      "norm_type": "batchnorm",
+      "epochs": 200,
+      "model": "vgg16"
+    },
+    {
+      "name": "maxnorm_vgg16",
+      "norm_type": "maxnorm",
+      "epochs": 200,
+      "model": "vgg16"
+    },
+    {
+      "name": "nonorm_vgg16",
+      "epochs": 200,
+      "model": "vgg16"
+    }
+  ]
+}

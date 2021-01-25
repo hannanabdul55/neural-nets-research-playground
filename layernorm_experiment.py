@@ -20,6 +20,9 @@ import torch.utils.data.distributed
 import torchvision.transforms as transforms
 # import torchvision.datasets as datasets
 from lit_model import *
+from pytorch_lightning.loggers import TensorBoardLogger
+
+
 import torchvision.models as models
 
 import argparse
@@ -66,24 +69,25 @@ else:
     exp_config = {
         'name': 'first_run',
         'exps': [
-        # {
-        #     'name': 'layernorm',
-        #     'norm_type': 'layernorm'
-        # },
-        {
-            'name': 'maxnorm',
-            'norm_type': 'maxnorm'
-        },
-        {
-            'name': 'batchnorm',
-            'norm_type': 'batchnorm'
-        },
-        {
-            'name': 'nonorm',
-            'epochs': 50
-        }
-    ]
+            # {
+            #     'name': 'layernorm',
+            #     'norm_type': 'layernorm'
+            # },
+            {
+                'name': 'maxnorm',
+                'norm_type': 'maxnorm'
+            },
+            {
+                'name': 'batchnorm',
+                'norm_type': 'batchnorm'
+            },
+            {
+                'name': 'nonorm',
+                'epochs': 50
+            }
+        ]
     }
+
 
 @ray.remote(num_gpus=1)
 def run_experiment(exp):
@@ -124,20 +128,25 @@ def run_experiment(exp):
     res = {
         'config': exp
     }
-    model_type = 'vgg'
+    model_type = 'vgg16'
     if 'model' in exp:
         model_type = exp['model']
     if model_type == 'resnet':
         model = torchvision.models.resnet50(pretrained=False, norm_layer=norm)
+    elif model_type == 'vgg19':
+        if norm is None:
+            model = vgg_test.vgg19()
+        else:
+            model = vgg_test.vgg19_bn(norm_layer=norm)
     else:
         if norm is None:
             model = vgg_test.vgg16()
         else:
-            model = vgg_test.vgg11_bn(norm_layer=norm)
+            model = vgg_test.vgg16_bn(norm_layer=norm)
+    logger = TensorBoardLogger("lightning_logs", name=exp['name'])
+    trainer = pl.Trainer(gpus=1, max_epochs=e, progress_bar_refresh_rate=10, logger=logger)
 
-    trainer = pl.Trainer(gpus=1,max_epochs=e, progress_bar_refresh_rate=10)
-
-    trainer.fit(LitModel(model, name = exp['name']), train_loader, val_loader)
+    trainer.fit(LitModel(model, name=exp['name']), train_loader, val_loader)
 
     pass
 
@@ -153,7 +162,7 @@ if __name__ == '__main__':
     if has_gpu:
         print(f"Initializing ray with {2} GPUs")
         print('Available devices ', torch.cuda.device_count())
-        ray.init(num_gpus= torch.cuda.device_count())
+        ray.init(num_gpus=torch.cuda.device_count())
     else:
         print(f"Initializing with no GPUs")
         ray.init()
@@ -162,6 +171,4 @@ if __name__ == '__main__':
     futures = [run_experiment.remote(x) for x in exp_config['exps']]
     res = ray.get(futures)
     b = time()
-    print(f"Experiment {exp_config['name']} ran in {b-a} seconds")
-
-
+    print(f"Experiment {exp_config['name']} ran in {b - a} seconds")
