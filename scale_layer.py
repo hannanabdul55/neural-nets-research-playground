@@ -23,7 +23,7 @@ class ScaleLayer(nn.Module):
         self.alpha = nn.Parameter(torch.tensor(alpha), requires_grad=True)
 
     def forward(self, input: torch.Tensor):
-        res = (self.alpha/torch.max(torch.abs(input.view(input.shape[0], -1)), dim=1)) * input
+        res = (self.alpha/torch.max(torch.abs(input.view(input.shape[0], -1)), dim=1)[0]) * input
         if self.writer is not None:
             self.writer.add_scalar("Loss/Alpha", self.alpha.data)
         #             print("alpha:" + str(self.alpha))
