@@ -25,8 +25,8 @@ class ScaleLayer(nn.Module):
     def forward(self, input: torch.Tensor):
 
         max_val = torch.max(torch.abs(input.view(input.shape[0], -1)), dim=1, keepdim=True)[0]
-        print(f"Max value shape: {max_val.shape}")
-        print(f"Input shape: {input.shape}")
+        # print(f"Max value shape: {max_val.shape}")
+        # print(f"Input shape: {input.shape}")
         res = (input/max_val.view(input.shape[0], *((1,)*(input.dim()-1))))
         if self.writer is not None:
             self.writer.add_scalar("Loss/Alpha", self.alpha.data)
