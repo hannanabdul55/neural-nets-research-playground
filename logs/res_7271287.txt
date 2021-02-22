@@ -1,0 +1,10 @@
+GPU ? True
+Initializing ray with 2 GPUs
+Available devices  2
+[2m[36m(pid=13658)[0m Files already downloaded and verified
+[2m[36m(pid=13656)[0m Files already downloaded and verified
+[2m[36m(pid=13658)[0m Validation sanity check: 0it [00:00, ?it/s]Validation sanity check:   0%|          | 0/2 [00:00<?, ?it/s]
+[2m[36m(pid=13656)[0m Validation sanity check: 0it [00:00, ?it/s]Validation sanity check:   0%|          | 0/2 [00:00<?, ?it/s]
+[2m[36m(pid=13656)[0m                                                               
+[2m[36m(pid=13656)[0m Training: 0it [00:00, ?it/s]Training:   0%|          | 0/470 [00:00<?, ?it/s]Epoch 0:   0%|          | 0/470 [00:00<?, ?it/s] 
+[2m[36m(pid=13658)[0m Files already downloaded and verified

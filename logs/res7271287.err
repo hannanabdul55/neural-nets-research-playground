@@ -1,0 +1,76 @@
+/cm/local/apps/slurm/var/spool/job7271287/slurm_script: line 21: activate: No such file or directory
+2021-01-25 03:15:13,224	INFO services.py:1171 -- View the Ray dashboard at [1m[32mhttp://127.0.0.1:8265[39m[22m
+[2m[36m(pid=13656)[0m GPU available: True, used: True
+[2m[36m(pid=13656)[0m TPU available: None, using: 0 TPU cores
+[2m[36m(pid=13656)[0m LOCAL_RANK: 0 - CUDA_VISIBLE_DEVICES: [1]
+[2m[36m(pid=13658)[0m GPU available: True, used: True
+[2m[36m(pid=13658)[0m TPU available: None, using: 0 TPU cores
+[2m[36m(pid=13658)[0m LOCAL_RANK: 0 - CUDA_VISIBLE_DEVICES: [2]
+[2m[36m(pid=13656)[0m Set SLURM handle signals.
+[2m[36m(pid=13656)[0m 
+[2m[36m(pid=13656)[0m   | Name           | Type             | Params
+[2m[36m(pid=13656)[0m ----------------------------------------------------
+[2m[36m(pid=13656)[0m 0 | model          | VGG              | 15.3 M
+[2m[36m(pid=13656)[0m 1 | criterion      | CrossEntropyLoss | 0     
+[2m[36m(pid=13656)[0m 2 | accuracy       | Accuracy         | 0     
+[2m[36m(pid=13656)[0m 3 | train_accuracy | Accuracy         | 0     
+[2m[36m(pid=13656)[0m ----------------------------------------------------
+[2m[36m(pid=13656)[0m 15.3 M    Trainable params
+[2m[36m(pid=13656)[0m 0         Non-trainable params
+[2m[36m(pid=13656)[0m 15.3 M    Total params
+[2m[36m(pid=13658)[0m Set SLURM handle signals.
+[2m[36m(pid=13658)[0m 
+[2m[36m(pid=13658)[0m   | Name           | Type             | Params
+[2m[36m(pid=13658)[0m ----------------------------------------------------
+[2m[36m(pid=13658)[0m 0 | model          | VGG              | 15.3 M
+[2m[36m(pid=13658)[0m 1 | criterion      | CrossEntropyLoss | 0     
+[2m[36m(pid=13658)[0m 2 | accuracy       | Accuracy         | 0     
+[2m[36m(pid=13658)[0m 3 | train_accuracy | Accuracy         | 0     
+[2m[36m(pid=13658)[0m ----------------------------------------------------
+[2m[36m(pid=13658)[0m 15.3 M    Trainable params
+[2m[36m(pid=13658)[0m 0         Non-trainable params
+[2m[36m(pid=13658)[0m 15.3 M    Total params
+Traceback (most recent call last):
+  File "layernorm_experiment.py", line 172, in <module>
+    res = ray.get(futures)
+  File "/home/akanji/miniconda3/envs/norm_exp/lib/python3.8/site-packages/ray/worker.py", line 1379, in get
+    raise value.as_instanceof_cause()
+ray.exceptions.RayTaskError(RuntimeError): [36mray::run_experiment()[39m (pid=13658, ip=10.141.0.22)
+  File "python/ray/_raylet.pyx", line 463, in ray._raylet.execute_task
+  File "layernorm_experiment.py", line 149, in run_experiment
+    trainer.fit(LitModel(model, name=exp['name']), train_loader, val_loader)
+  File "/home/akanji/miniconda3/envs/norm_exp/lib/python3.8/site-packages/pytorch_lightning/trainer/trainer.py", line 509, in fit
+    results = self.accelerator_backend.train()
+  File "/home/akanji/miniconda3/envs/norm_exp/lib/python3.8/site-packages/pytorch_lightning/accelerators/accelerator.py", line 57, in train
+    return self.train_or_test()
+  File "/home/akanji/miniconda3/envs/norm_exp/lib/python3.8/site-packages/pytorch_lightning/accelerators/accelerator.py", line 74, in train_or_test
+    results = self.trainer.train()
+  File "/home/akanji/miniconda3/envs/norm_exp/lib/python3.8/site-packages/pytorch_lightning/trainer/trainer.py", line 531, in train
+    self.run_sanity_check(self.get_model())
+  File "/home/akanji/miniconda3/envs/norm_exp/lib/python3.8/site-packages/pytorch_lightning/trainer/trainer.py", line 729, in run_sanity_check
+    _, eval_results = self.run_evaluation(max_batches=self.num_sanity_val_batches)
+  File "/home/akanji/miniconda3/envs/norm_exp/lib/python3.8/site-packages/pytorch_lightning/trainer/trainer.py", line 645, in run_evaluation
+    output = self.evaluation_loop.evaluation_step(batch, batch_idx, dataloader_idx)
+  File "/home/akanji/miniconda3/envs/norm_exp/lib/python3.8/site-packages/pytorch_lightning/trainer/evaluation_loop.py", line 180, in evaluation_step
+    output = self.trainer.accelerator_backend.validation_step(args)
+  File "/home/akanji/miniconda3/envs/norm_exp/lib/python3.8/site-packages/pytorch_lightning/accelerators/gpu_accelerator.py", line 74, in validation_step
+    return self._step(self.trainer.model.validation_step, args)
+  File "/home/akanji/miniconda3/envs/norm_exp/lib/python3.8/site-packages/pytorch_lightning/accelerators/gpu_accelerator.py", line 66, in _step
+    output = model_step(*args)
+  File "/home/akanji/neural-nets-research-playground/lit_model.py", line 28, in validation_step
+    logits = self.model(x)
+  File "/home/akanji/miniconda3/envs/norm_exp/lib/python3.8/site-packages/torch/nn/modules/module.py", line 727, in _call_impl
+    result = self.forward(*input, **kwargs)
+  File "/home/akanji/neural-nets-research-playground/vgg.py", line 40, in forward
+    x = self.features(x)
+  File "/home/akanji/miniconda3/envs/norm_exp/lib/python3.8/site-packages/torch/nn/modules/module.py", line 727, in _call_impl
+    result = self.forward(*input, **kwargs)
+  File "/home/akanji/miniconda3/envs/norm_exp/lib/python3.8/site-packages/torch/nn/modules/container.py", line 117, in forward
+    input = module(input)
+  File "/home/akanji/miniconda3/envs/norm_exp/lib/python3.8/site-packages/torch/nn/modules/module.py", line 727, in _call_impl
+    result = self.forward(*input, **kwargs)
+  File "/home/akanji/miniconda3/envs/norm_exp/lib/python3.8/site-packages/torch/nn/modules/normalization.py", line 169, in forward
+    return F.layer_norm(
+  File "/home/akanji/miniconda3/envs/norm_exp/lib/python3.8/site-packages/torch/nn/functional.py", line 2094, in layer_norm
+    return torch.layer_norm(input, normalized_shape, weight, bias, eps,
+RuntimeError: Given normalized_shape=[64], expected input with shape [*, 64], but got input of size[128, 64, 32, 32]
