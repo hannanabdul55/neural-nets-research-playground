@@ -1,5 +1,5 @@
 {
-  "name": "vgg16_run",
+  "name": "vgg16_run_second",
   "exps": [
     {
       "name": "batchnorm_vgg16",
