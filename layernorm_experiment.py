@@ -128,6 +128,12 @@ def run_experiment(exp):
     res = {
         'config': exp
     }
+
+    if 'lr' in exp:
+        lr = exp['lr']
+    else:
+        lr = 3e-4
+
     model_type = 'vgg16'
     if 'model' in exp:
         model_type = exp['model']
@@ -143,10 +149,10 @@ def run_experiment(exp):
             model = vgg_test.vgg16()
         else:
             model = vgg_test.vgg16_bn(norm_layer=norm)
-    logger = TensorBoardLogger("lightning_logs", name=exp['name'])
+    logger = TensorBoardLogger("lightning_logs", name=f"{exp['name']}-lr:{lr}")
     trainer = pl.Trainer(gpus=1, max_epochs=e, progress_bar_refresh_rate=10, logger=logger)
 
-    trainer.fit(LitModel(model, name=exp['name']), train_loader, val_loader)
+    trainer.fit(LitModel(model, name=exp['name'], learning_rate=lr), train_loader, val_loader)
 
     pass
 

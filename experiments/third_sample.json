@@ -1,0 +1,45 @@
+{
+  "name": "vgg16_run_third",
+  "exps": [
+    {
+      "name": "batchnorm_vgg16",
+      "norm_type": "batchnorm",
+      "epochs": 100,
+      "model": "vgg16",
+      "lr": 3e-2
+    },
+    {
+      "name": "maxnorm_vgg16",
+      "norm_type": "maxnorm",
+      "epochs": 100,
+      "model": "vgg16",
+      "lr": 3e-2
+    },
+    {
+      "name": "nonorm_vgg16",
+      "epochs": 100,
+      "model": "vgg16",
+      "lr": 3e-2
+    },
+    {
+      "name": "batchnorm_vgg16",
+      "norm_type": "batchnorm",
+      "epochs": 100,
+      "model": "vgg16",
+      "lr": 3e-1
+    },
+    {
+      "name": "maxnorm_vgg16",
+      "norm_type": "maxnorm",
+      "epochs": 100,
+      "model": "vgg16",
+      "lr": 3e-1
+    },
+    {
+      "name": "nonorm_vgg16",
+      "epochs": 100,
+      "model": "vgg16",
+      "lr": 3e-1
+    }
+  ]
+}

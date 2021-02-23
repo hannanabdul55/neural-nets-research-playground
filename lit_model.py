@@ -6,13 +6,14 @@ from torch.utils.data import DataLoader, random_split
 
 class LitModel(pl.LightningModule):
 
-    def __init__(self, model, criterion=nn.CrossEntropyLoss(),name='def'):
+    def __init__(self, model, criterion=nn.CrossEntropyLoss(), name='def', learning_rate=3e-4):
         super().__init__()
         self.model = model
         self.criterion = criterion
         self.n = name
         self.accuracy = pl.metrics.Accuracy()
         self.train_accuracy = pl.metrics.Accuracy()
+        self.lr = learning_rate
 
     def training_step(self, batch, batch_size):
         x, y = batch
@@ -39,5 +40,5 @@ class LitModel(pl.LightningModule):
     #     return loss
 
     def configure_optimizers(self):
-        optimizer = torch.optim.Adam(self.parameters(), lr=3e-4)
+        optimizer = torch.optim.Adam(self.parameters(), lr=self.lr)
         return optimizer
