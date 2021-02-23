@@ -166,8 +166,8 @@ if __name__ == '__main__':
     has_gpu = torch.cuda.is_available()
     print(f"GPU ? {has_gpu}")
     if has_gpu:
-        print(f"Initializing ray with {2} GPUs")
-        print('Available devices ', torch.cuda.device_count())
+        print(f"Initializing ray with {torch.cuda.device_count()} GPUs")
+        # print('Available devices ', torch.cuda.device_count())
         ray.init(num_gpus=torch.cuda.device_count())
     else:
         print(f"Initializing with no GPUs")
