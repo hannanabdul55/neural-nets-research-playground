@@ -1,17 +1,17 @@
 #!/bin/bash
 #
-#SBATCH --job-name=exp_norm
+#SBATCH --job-name=exp_norm_lr
 #SBATCH --output=logs/res_%j.txt  # output file
 #SBATCH -e logs/res%j.err        # File to which STDERR will be written
-#SBATCH --partition=m40-long   # Partition to submit to
+#SBATCH --partition=2080ti-long   # Partition to submit to
 
 #
 #SBATCH --ntasks=1
-#SBATCH --gres=gpu:2
+#SBATCH --gres=gpu:4
 #SBATCH --cpus-per-task=8
 #SBATCH --ntasks-per-node=1
 #SBATCH --time=2-12:59         # Maximum runtime in D-HH:MM
-#SBATCH --mem-per-cpu=6gb    # Memory in MB per cpu allocated
+#SBATCH --mem-per-cpu=4gb    # Memory in MB per cpu allocated
 #SBATCH --mail-type=ALL
 #SBATCH --mail-user=akanji@cs.umass.edu
 export PYTHONPATH=/home/akanji/neural-nets-research-playground:$PYTHONPATH
