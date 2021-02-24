@@ -22,9 +22,6 @@ import torchvision.transforms as transforms
 from lit_model import *
 from pytorch_lightning.loggers import TensorBoardLogger
 
-
-import torchvision.models as models
-
 import argparse
 import json
 import ray
@@ -173,8 +170,19 @@ if __name__ == '__main__':
         print(f"Initializing with no GPUs")
         ray.init()
 
+    exps = exp_config['exps']
+    if 'lrs' in exp_config:
+        exps_t = []
+        for exp in exps:
+            for lr in exp_config['lrs']:
+                exp_t = copy.deepcopy(exp)
+                exp_t['lr'] = lr
+                exps_t.append(exp_t)
+        exps = exps_t
+
+    # print(exps)
     a = time()
-    futures = [run_experiment.remote(x) for x in exp_config['exps']]
+    futures = [run_experiment.remote(x) for x in exps]
     res = ray.get(futures)
     b = time()
     print(f"Experiment {exp_config['name']} ran in {b - a} seconds")

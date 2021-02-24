@@ -1,0 +1,34 @@
+{
+  "name": "vgg16_run_varying_lr",
+  "lrs": [
+    3e-3,
+    6e-3,
+    1e-2,
+    2e-2,
+    4e-2,
+    7e-2,
+    1e-1
+  ],
+  "exps": [
+    {
+      "name": "batchnorm_vgg16",
+      "norm_type": "batchnorm",
+      "epochs": 100,
+      "model": "vgg16",
+      "lr": 3e-2
+    },
+    {
+      "name": "maxnorm_vgg16",
+      "norm_type": "maxnorm",
+      "epochs": 100,
+      "model": "vgg16",
+      "lr": 3e-2
+    },
+    {
+      "name": "nonorm_vgg16",
+      "epochs": 100,
+      "model": "vgg16",
+      "lr": 3e-2
+    }
+  ]
+}
